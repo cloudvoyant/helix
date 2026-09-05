@@ -165,6 +165,26 @@ export {
 export { Input, type InputProps } from './input';
 export { Textarea, type TextareaProps } from './textarea';
 export {
+  Chat,
+  ChatThread,
+  ChatMessage,
+  ChatMessageReaction,
+  ChatInput,
+  ChatTypingIndicator,
+  AgenticChat,
+  AgentStreamingMessage,
+  useAgenticChat,
+  type ChatProps,
+  type ChatThreadProps,
+  type ChatMessageProps,
+  type ChatMessageReactionProps,
+  type ChatInputProps,
+  type ChatTypingIndicatorProps,
+  type AgenticChatProps,
+  type AgentStreamingMessageProps,
+  type UseAgenticChatOptions,
+} from './chat';
+export {
   NumberInput,
   NumberInputControl,
   NumberInputInput,

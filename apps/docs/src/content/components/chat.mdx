@@ -1,0 +1,38 @@
+---
+title: Chat
+description: A composable Slack, iOS, or minimal chat thread and attachment-aware composer for React and Svelte.
+order: 2
+group: chat
+---
+
+import Demo from '../../components/Demo.astro';
+
+Chat combines a themed shell, a non-virtualized explicit-child thread, messages, typing state, and an attachment-aware input. Use AgenticChat for large virtualized agent transcripts.
+
+<Demo component="chat" example="default" />
+
+## API Reference
+
+### Chat
+
+`variant` accepts `'slack'`, `'ios'`, or `'minimal'`. Slack left-aligns the thread, iOS uses right-aligned accent bubbles for the current user, and minimal removes bubble chrome for terminal-like conversations while preserving optional sender metadata.
+
+### ChatThread
+
+`topThreshold` defaults to 32 pixels. `onScrollTop` fires once when the viewport enters that threshold and resets after it leaves. ChatThread renders all explicit children and does not depend on TanStack Virtual.
+
+### ChatInput
+
+`onSend` receives `{ text, attachments }`. Enter sends, Shift+Enter inserts a line break, composition input is protected, and `accept`/`multiple` configure the native file picker. File objects are emitted but never uploaded by the component. `attachIcon`, `sendIcon`, and `removeIcon` accept React nodes or Svelte snippets and default to Phosphor `Paperclip`, `ArrowUp`, and `X` icons.
+
+### ChatTypingIndicator
+
+`label` identifies who is typing and is announced through a polite live region. The visual waiting affordance is a Phosphor `CircleNotch` icon.
+
+## Accessibility
+
+ChatInput uses native form, textarea, file input, and button behavior. Icon-only attach/send/remove buttons have labels, disabled submit is not focus-activatable, and typing/status updates use polite live regions.
+
+## Future additions
+
+Replies and edits are deferred. Chat intentionally does not include agent events, thinking/activity, subagent panels, assistant questions, or assistant suggestions.

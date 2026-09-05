@@ -1,0 +1,44 @@
+---
+title: AgenticChat
+description: A virtualized, streaming agent transcript with safe Markdown and equivalent React and Svelte state APIs.
+order: 3
+group: chat
+---
+
+import Demo from '../../components/Demo.astro';
+
+AgenticChat adds dynamic-height virtualization and explicit streaming UI to the Chat family. React uses `useAgenticChat`; Svelte uses `createAgenticChat`; both leave transport, persistence, cancellation, retry, and uploads to the application.
+
+> `@tanstack/react-virtual` and `@tanstack/svelte-virtual` are required peer dependencies of their matching framework packages. They are external and are not bundled.
+
+<Demo component="agentic-chat" example="default" />
+
+## API Reference
+
+### AgenticChat
+
+| Prop            | Type                              | Default             | Description                                               |
+| --------------- | --------------------------------- | ------------------- | --------------------------------------------------------- |
+| `messages`      | `ChatMessageData[]`               | required            | Stable-ID records rendered by the virtualizer.            |
+| `variant`       | `ChatVariant`                     | `'minimal'`         | Chat presentation.                                        |
+| `estimateSize`  | `number`                          | `96`                | Initial dynamic row-height estimate in pixels.            |
+| `overscan`      | `number`                          | `6`                 | Extra rows rendered outside the viewport.                 |
+| `followOutput`  | `boolean`                         | `true`              | Follow new output while the user remains near the bottom. |
+| `onScrollTop`   | `() => void \| Promise<void>`     | —                   | Loads older history once per threshold entry.             |
+| `renderMessage` | framework render callback/snippet | default ChatMessage | Custom message rendering.                                 |
+
+### AgentStreamingMessage
+
+Displays safe Markdown for the transient agent response and announces waiting, streaming, retrying, completed, or cancelled state. Waiting/streaming, retrying, completed, and cancelled use Phosphor `CircleNotch`, `ArrowClockwise`, `CheckCircle`, and `Stop` defaults; the `icon` React node/Svelte snippet overrides them.
+
+### useAgenticChat and createAgenticChat
+
+Both expose `messages`, `streamingContent`, `streamingState`, `prependMessages`, `addMessage`, `updateMessage`, `removeMessage`, `setStreaming`, `cancelStreaming`, and `clearMessages`. `addMessage` requires a complete `ChatMessageData` record with a caller-owned collision-free `id`. State values are `idle`, `waiting`, `streaming`, `completed`, `retrying`, and `cancelled`.
+
+## Markdown safety
+
+Agent content compiles through micromark with dangerous HTML and dangerous protocols disabled. CommonMark headings, lists, links, emphasis, blockquotes, and code render semantically; raw HTML is displayed as text.
+
+## Future additions
+
+Structured events, visible thinking/activity, syntax-highlighted code blocks, subagent panels, assistant questions, assistant suggestions, provider SDK adapters, persistence adapters, and migration of existing Lucide-based docs examples are intentionally deferred.

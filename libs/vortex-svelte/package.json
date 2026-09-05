@@ -30,6 +30,7 @@
     "format:check": "prettier --check \"src/**/*.{ts,svelte}\""
   },
   "peerDependencies": {
+    "@tanstack/svelte-virtual": "catalog:",
     "svelte": "catalog:",
     "mermaid": "catalog:",
     "shiki": "catalog:"
@@ -45,9 +46,11 @@
   "dependencies": {
     "@ark-ui/svelte": "catalog:",
     "@cloudvoyant/vortex-ui": "workspace:*",
-    "@tanstack/charts": "catalog:"
+    "@tanstack/charts": "catalog:",
+    "phosphor-svelte": "catalog:"
   },
   "devDependencies": {
+    "@tanstack/svelte-virtual": "catalog:",
     "@sveltejs/package": "catalog:",
     "@sveltejs/vite-plugin-svelte": "catalog:",
     "@types/katex": "catalog:",

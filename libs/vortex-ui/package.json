@@ -41,6 +41,7 @@
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
     "katex": "catalog:",
+    "micromark": "catalog:",
     "tailwind-merge": "catalog:"
   },
   "peerDependencies": {

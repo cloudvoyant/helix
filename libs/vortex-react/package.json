@@ -29,6 +29,7 @@
     "format:check": "prettier --check \"src/**/*.{ts,tsx}\""
   },
   "peerDependencies": {
+    "@tanstack/react-virtual": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "manim-web": "catalog:",
@@ -49,9 +50,11 @@
   "dependencies": {
     "@ark-ui/react": "catalog:",
     "@cloudvoyant/vortex-ui": "workspace:*",
+    "@phosphor-icons/react": "catalog:",
     "@tanstack/charts": "catalog:"
   },
   "devDependencies": {
+    "@tanstack/react-virtual": "catalog:",
     "@types/katex": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
