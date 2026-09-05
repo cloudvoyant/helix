@@ -25,6 +25,7 @@
     "@cloudvoyant/vortex-react": "workspace:*",
     "@cloudvoyant/vortex-svelte": "workspace:*",
     "@tanstack/react-virtual": "catalog:",
+    "@tanstack/svelte-virtual": "catalog:",
     "@tailwindcss/vite": "catalog:",
     "astro": "catalog:",
     "lucide-react": "catalog:",
