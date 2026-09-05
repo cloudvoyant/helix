@@ -33,7 +33,8 @@
     "react-dom": "catalog:",
     "manim-web": "catalog:",
     "mermaid": "catalog:",
-    "shiki": "catalog:"
+    "shiki": "catalog:",
+    "@tanstack/react-virtual": "catalog:"
   },
   "peerDependenciesMeta": {
     "manim-web": {
@@ -44,14 +45,20 @@
     },
     "shiki": {
       "optional": true
+    },
+    "@tanstack/react-virtual": {
+      "optional": true
     }
   },
   "dependencies": {
     "@ark-ui/react": "catalog:",
     "@cloudvoyant/vortex-ui": "workspace:*",
-    "@tanstack/charts": "catalog:"
+    "@tanstack/charts": "catalog:",
+    "@phosphor-icons/react": "catalog:",
+    "@tanstack/react-virtual": "catalog:"
   },
   "devDependencies": {
+    "@tanstack/react-virtual": "catalog:",
     "@types/katex": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
