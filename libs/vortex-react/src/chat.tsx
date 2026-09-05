@@ -54,7 +54,6 @@ import {
 } from '@cloudvoyant/vortex-ui';
 import {
   createContext,
-  createElement,
   useCallback,
   useContext,
   useEffect,
@@ -67,48 +66,6 @@ import {
 } from 'react';
 
 const ChatContext = createContext<ChatVariant>('slack');
-
-const MARKDOWN_ELEMENTS = new Set([
-  'a',
-  'blockquote',
-  'br',
-  'code',
-  'del',
-  'em',
-  'h1',
-  'h2',
-  'h3',
-  'h4',
-  'h5',
-  'h6',
-  'li',
-  'ol',
-  'p',
-  'pre',
-  'strong',
-  'ul',
-]);
-
-function renderSafeMarkdown(value: string): ReactNode {
-  if (typeof DOMParser === 'undefined') return value;
-  const document = new DOMParser().parseFromString(renderChatMarkdown(value), 'text/html');
-  const renderNode = (node: Node, key: string): ReactNode => {
-    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
-    if (node.nodeType !== Node.ELEMENT_NODE) return null;
-    const element = node as HTMLElement;
-    const tag = element.tagName.toLowerCase();
-    if (!MARKDOWN_ELEMENTS.has(tag))
-      return Array.from(element.childNodes).map((child, index) => renderNode(child, `${key}-${index}`));
-    const children = Array.from(element.childNodes).map((child, index) => renderNode(child, `${key}-${index}`));
-    const props: Record<string, string> = {};
-    if (tag === 'a') {
-      const href = element.getAttribute('href') ?? '';
-      if (/^(https?:|mailto:)/i.test(href)) props.href = href;
-    }
-    return createElement(tag, { ...props, key }, children);
-  };
-  return Array.from(document.body.childNodes).map((node, index) => renderNode(node, String(index)));
-}
 
 export type ChatProps = HTMLArkProps<'section'> & { variant?: ChatVariant };
 
@@ -259,7 +216,11 @@ export function ChatMessage({
             {at && <time dateTime={at instanceof Date ? at.toISOString() : at}>{formatChatTimestamp(at)}</time>}
           </div>
         )}
-        <div className={chatMessageBodyBase}>{markdown === null ? body : renderSafeMarkdown(body as string)}</div>
+        {markdown === null ? (
+          <div className={chatMessageBodyBase}>{body}</div>
+        ) : (
+          <div className={chatMessageBodyBase} dangerouslySetInnerHTML={{ __html: markdown }} />
+        )}
         {attachments.length > 0 && (
           <div className={chatAttachmentListBase} aria-label="Attachments">
             {attachments.map((attachment) =>
@@ -490,7 +451,12 @@ export function AgentStreamingMessage({ content = '', state, icon, className, ..
       <span className="mb-1 inline-flex" aria-hidden="true">
         {icon ?? stateIcon}
       </span>
-      {content ? <div className={chatMessageBodyBase}>{renderSafeMarkdown(content)}</div> : null}
+      {content ? (
+        <div
+          className={chatMessageBodyBase}
+          dangerouslySetInnerHTML={{ __html: renderChatMarkdown(content) }}
+        />
+      ) : null}
     </ark.div>
   );
 }
@@ -600,7 +566,7 @@ export function AgenticChat({
         }}
       >
         <div className={chatVirtualContentBase} style={{ height: virtualizer.getTotalSize() }}>
-          {virtualizer.getVirtualItems().map((item) => {
+          {(messages.length === 0 ? [] : virtualizer.getVirtualItems()).map((item) => {
             const message = messages[item.index];
             return (
               <div

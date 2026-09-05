@@ -1,0 +1,52 @@
+---
+title: ChatMessage
+description: Role-aware messages with attachments, reactions, delivery states, and safe Markdown for React and Svelte.
+order: 1
+group: chat
+---
+
+import Demo from '../../components/Demo.astro';
+
+ChatMessage is closely based on [shadcn AI Elements Message](https://elements.ai-sdk.dev/components/message) after Shark UI, Tark UI, Ark UI, and Chakra UI were checked and found not to provide a chat-message family. It shares role/layout recipes and message contracts from `@cloudvoyant/vortex-ui`.
+
+<Demo component="chat-message" example="default" />
+
+## API Reference
+
+### ChatMessage
+
+#### Props
+
+| Prop               | Type                             | Default         | Description                                                           |
+| ------------------ | -------------------------------- | --------------- | --------------------------------------------------------------------- |
+| `id`               | `string`                         | required        | Stable message identifier.                                            |
+| `role`             | `'default' \| 'user' \| 'agent'` | `'default'`     | Sender presentation and default content format.                       |
+| `from`             | `string`                         | —               | Visible sender label.                                                 |
+| `at`               | `Date \| string`                 | —               | Message timestamp.                                                    |
+| `status`           | `ChatMessageStatus`              | —               | Delivery or streaming status.                                         |
+| `format`           | `'text' \| 'markdown'`           | role-dependent  | Agent messages default to safe Markdown; other roles default to text. |
+| `content`          | `string`                         | `''`            | Message content; React may alternatively pass children.               |
+| `attachments`      | `ChatAttachment[]`               | `[]`            | Linked or informational attachments shown below content.              |
+| `reactions`        | `ChatReaction[]`                 | `[]`            | Persisted emoji or Phosphor rating reactions.                         |
+| `attachmentIcon`   | React node / Svelte snippet      | Phosphor `File` | Overrides the attachment icon.                                        |
+| `onReactionChange` | `(key, pressed) => void`         | —               | Reports a reaction toggle for application persistence.                |
+
+### ChatMessageReaction
+
+#### Props
+
+| Prop              | Type                        | Default             | Description                                                                                                    |
+| ----------------- | --------------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `reaction`        | `ChatReaction`              | required            | Label, value, count, initial user state, and a required `thumbs-up`/`thumbs-down` icon key for rate reactions. |
+| `variant`         | `'emoji' \| 'rate'`         | reaction value      | Distinguishes general emoji from thumbs-up/down ratings.                                                       |
+| `pressed`         | `boolean`                   | uncontrolled        | Controlled current-user reaction state.                                                                        |
+| `icon`            | React node / Svelte snippet | reaction icon/value | Overrides the rendered reaction icon.                                                                          |
+| `onPressedChange` | `(pressed) => void`         | —                   | Reports accessible toggle changes.                                                                             |
+
+## Accessibility
+
+Reactions are native buttons with `aria-pressed` and accessible labels. Sender metadata uses `<time>`, attachments use links when a URL exists, and non-completed statuses use a live status region.
+
+## Future additions
+
+Replies and edits belong on ChatMessage in a future release. Structured agent events, thinking/activity, subagent panels, assistant questions, and assistant suggestions belong on AgenticChat.

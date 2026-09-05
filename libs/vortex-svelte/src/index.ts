@@ -34,6 +34,7 @@ export * from './navbar';
 export * from './field';
 export { default as Input } from './Input.svelte';
 export { default as Textarea } from './Textarea.svelte';
+export * from './chat';
 export * from './number-input';
 export * from './checkbox';
 export * from './switch';
