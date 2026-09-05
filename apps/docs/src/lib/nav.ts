@@ -16,4 +16,5 @@ export const NAV_GROUPS: NavGroup[] = [
   { label: 'Forms', section: 'components', group: 'forms' },
   { label: 'Overlays', section: 'components', group: 'overlays' },
   { label: 'Rich Text', section: 'components', group: 'rich-text' },
+  { label: 'Chat', section: 'components', group: 'chat' },
 ];

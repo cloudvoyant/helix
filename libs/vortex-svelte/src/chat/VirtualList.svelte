@@ -19,6 +19,7 @@
 
   let snapshot: Snapshot | null = $state(null);
   let measure: ((el: Element) => void) | undefined;
+  let setOptions = $state<((options: { count: number }) => void) | undefined>(undefined);
   let unsubscribe: (() => void) | undefined;
 
   onMount(() => {
@@ -35,9 +36,17 @@
           totalSize: virtualizer.getTotalSize(),
         };
         measure = (el) => virtualizer.measureElement(el);
+        setOptions = virtualizer.setOptions;
       });
     });
     return () => unsubscribe?.();
+  });
+
+  // Keep the virtualizer's count in sync with the messages prop — the Svelte
+  // store API has no per-render options diffing, so push count changes
+  // explicitly (mirrors the React adapter re-invoking useVirtualizer).
+  $effect(() => {
+    setOptions?.({ count: messages.length });
   });
 
   /** Svelte action form of the TanStack `measureElement` ref. */

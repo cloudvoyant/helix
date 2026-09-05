@@ -1,0 +1,76 @@
+---
+title: Chat
+description: A presentational chat surface — thread, messages, typing indicator, and composer — for React and Svelte.
+order: 25
+group: chat
+---
+
+import Demo from '../../components/Demo.astro';
+import Examples from '../../components/Examples.astro';
+
+`Chat` is a dumb/presentational surface: you own the messages and render them as `ChatMessage` children (or a `messages` array) inside `ChatThread`, with `ChatInput` as the composer. Variants change layout — `ios` floats your messages right as accent bubbles, `slack` left-aligns everything, and `minimal` (thread-level) drops labels and bubbles for a styling-only distinction. Enter sends; Shift+Enter inserts a newline.
+
+<Demo component="chat" example="default" />
+
+## Examples
+
+<Examples component="chat" exclude="default" />
+
+## API Reference
+
+### Chat
+
+#### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `'slack' \| 'ios'` | `'slack'` | Thread layout provided to nested messages. |
+
+Accepts all Ark factory `div` props plus `className`/`class`.
+
+### ChatThread
+
+#### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `'slack' \| 'ios' \| 'minimal'` | `'slack'` | Thread layout; overrides the inherited value. |
+| `messages` | `ChatMessageData[]` | — | Data mode: renders a `ChatMessage` per item. |
+| `virtual` | `boolean` | `false` | Virtualize data-mode rows (see below). |
+| `estimateSize` | `() => number` | `() => 64` | Estimated row height for virtualization. |
+| `onScrollTop` | `() => void` | — | Fires once on reaching the top; re-arms after scrolling back down — wire history loading. |
+| `children` | `ReactNode` / snippet | — | Presentational mode content. |
+
+**Virtualization is an optional peer dependency.** `virtual` dynamically imports `@tanstack/react-virtual` (React) or `@tanstack/svelte-virtual` (Svelte) — install the matching package in your app to enable it; it is never bundled, and without it the thread renders the full list.
+
+### ChatInput
+
+#### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `placeholder` | `string` | `'Write a message…'` | Also used as the textarea's accessible label. |
+| `value` / `onValueChange` | `string` / `(v: string) => void` | — | Controlled usage; omit for uncontrolled. |
+| `onSend` | `(text: string, attachments: ChatAttachment[]) => void` | — | Enter or the send trigger; both reset after firing. |
+| `disabled` | `boolean` | `false` | Disables the textarea and both triggers. |
+| `attachLabel` / `sendLabel` | `string` | `'Attach files'` / `'Send message'` | Accessible trigger labels. |
+
+### TypingIndicator
+
+#### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | `string` | `'typing…'` | Visually hidden announcement on the `role="status"` element. |
+
+## Accessibility
+
+The composer is a labelled multiline textbox — Enter sends, Shift+Enter inserts a newline, and IME composition never sends. Triggers are labelled native buttons. The typing indicator is a `role="status"` region announcing its hidden label.
+
+## Theme extensions
+
+None. The chat reuses existing tokens (`--primary`, `--card`, `--muted`, `--border`, `--background`) — no `theme.css` changes.
+
+## Future Work
+
+Planned chat-family extensions: replies, events, thinking, edits, assistant thinking/activity, subagent panels, assistant questions, and assistant suggestions. Built-in markdown rendering for agent messages and auto-scroll pinning are also on the list.
