@@ -1,0 +1,61 @@
+---
+title: AgentChat
+description: An agentic chat surface with streaming agent replies via useAgenticChat, for React and Svelte.
+order: 26
+group: chat
+---
+
+import Demo from '../../components/Demo.astro';
+import Examples from '../../components/Examples.astro';
+
+`AgentChat` wraps the presentational chat family with a streaming state machine. Call `useAgenticChat()` to get a controller, wire your transport (fetch/SSE) to `dispatch` and the mutators, and render `ChatThread` (data mode, optionally `virtual`), `AgentStreamingMessage` (the streaming tail with a caret, or the typing indicator while waiting), and `ChatInput` inside the root. Statuses flow `idle → waiting → streaming → completed`, with `retrying` and `cancelled` (with an optional `error`) for failures.
+
+<Demo component="agent-chat" example="streaming" />
+
+## Examples
+
+<Examples component="agent-chat" exclude="streaming" />
+
+## API Reference
+
+### AgentChat
+
+#### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `chat` | `AgenticChatController` | — | The `useAgenticChat()` return. |
+| `threadVariant` | `'slack' \| 'ios' \| 'minimal'` | `'minimal'` | Thread variant for nested thread and streaming message. |
+
+Accepts all Ark factory `div` props plus `className`/`class`.
+
+### AgentStreamingMessage
+
+#### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | — | Overrides the controller's streaming text. |
+| `streaming` | `boolean` | — | Overrides the controller's active-stream detection. |
+
+Renders nothing when inactive with no text. The region carries `aria-live="polite"`.
+
+### useAgenticChat()
+
+Returns `state` (`{ messages, pending, status, error }`) plus `dispatch(event)`, `addMessage(message)`, `prependMessages(messages)`, `setStreamingText(text)`, and `setStatus(status)`. In Svelte the reads are reactive getters; in React the controller memoizes with the reducer state.
+
+**Stream events:** `{ type: 'start' }`, `{ type: 'delta', text }`, `{ type: 'retry' }`, `{ type: 'cancel' }`, `{ type: 'fail', error }`, `{ type: 'done', id }` (commits the accumulated text as an agent message), plus `{ type: 'add' | 'prepend' | 'status' | 'pending' }`.
+
+**Virtualization is an optional peer dependency** — see the `Chat` page's `ChatThread` notes.
+
+## Accessibility
+
+The streaming tail is a polite live region: waiting shows the typing indicator's `role="status"` announcement and streamed text updates are announced as they land. All interaction primitives come from the presentational family (labelled buttons, labelled textbox).
+
+## Theme extensions
+
+None — the agentic layer reuses the chat family tokens.
+
+## Future Work
+
+Ask-user-question flows will grow the streaming demo. Also planned: assistant questions/suggestions, subagent panels, thinking/activity surfaces, and stop/abort transport wiring (the hook already exposes statuses; your transport owns cancellation).

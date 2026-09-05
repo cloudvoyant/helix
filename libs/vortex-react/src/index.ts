@@ -287,3 +287,31 @@ export {
   type NumericQuestionProps,
   type QuizProps,
 } from './questions';
+export {
+  Chat,
+  ChatThread,
+  TypingIndicator,
+  type ChatProps,
+  type ChatThreadProps,
+  type TypingIndicatorProps,
+} from './chat';
+export { ChatContext, useChatContext, type ChatContextValue } from './chat-context';
+export {
+  ChatMessage,
+  ChatMessageReaction,
+  ReactionEmoji,
+  ReactionRate,
+  type ChatMessageProps,
+  type ChatMessageReactionProps,
+  type ReactionEmojiProps,
+  type ReactionRateProps,
+} from './chat-message';
+export { ChatInput, type ChatInputProps } from './chat-input';
+export {
+  AgentChat,
+  AgentStreamingMessage,
+  useAgenticChat,
+  type AgentChatProps,
+  type AgentStreamingMessageProps,
+  type AgenticChatController,
+} from './agent-chat';

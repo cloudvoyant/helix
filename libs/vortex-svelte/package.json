@@ -32,7 +32,8 @@
   "peerDependencies": {
     "svelte": "catalog:",
     "mermaid": "catalog:",
-    "shiki": "catalog:"
+    "shiki": "catalog:",
+    "@tanstack/svelte-virtual": "catalog:"
   },
   "peerDependenciesMeta": {
     "mermaid": {
@@ -40,16 +41,22 @@
     },
     "shiki": {
       "optional": true
+    },
+    "@tanstack/svelte-virtual": {
+      "optional": true
     }
   },
   "dependencies": {
     "@ark-ui/svelte": "catalog:",
     "@cloudvoyant/vortex-ui": "workspace:*",
-    "@tanstack/charts": "catalog:"
+    "@tanstack/charts": "catalog:",
+    "@tanstack/svelte-virtual": "catalog:",
+    "phosphor-svelte": "catalog:"
   },
   "devDependencies": {
     "@sveltejs/package": "catalog:",
     "@sveltejs/vite-plugin-svelte": "catalog:",
+    "@tanstack/svelte-virtual": "catalog:",
     "@types/katex": "catalog:",
     "katex": "catalog:",
     "manim-web": "catalog:",

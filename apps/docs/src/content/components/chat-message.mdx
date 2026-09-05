@@ -1,0 +1,77 @@
+---
+title: ChatMessage
+description: One chat message with variants, statuses, attachments, and reactions, for React and Svelte.
+order: 24
+group: chat
+---
+
+import Demo from '../../components/Demo.astro';
+import Examples from '../../components/Examples.astro';
+
+`ChatMessage` renders a single message inside a `ChatThread`. The `variant` sets the role — `default` (other people), `user` (your own messages), `agent` (AI assistant) — and the surrounding thread variant (`slack`, `ios`, `minimal`) decides alignment and bubble styling. Transient `status` values cover `sending`, `streaming`, and `error`; `attachments` render as chips below the body; reactions are a controlled `Record<string, number>` keyed by unicode emoji or `thumbs-up`/`thumbs-down`, toggled through `onReactionToggle` with `ReactionEmoji` (popover grid) and `ReactionRate` (thumbs) menus.
+
+<Demo component="chat-message" example="default" />
+
+## Examples
+
+<Examples component="chat-message" exclude="default" />
+
+## API Reference
+
+### ChatMessage
+
+#### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `'user' \| 'agent' \| 'default'` | `'default'` | Message role. |
+| `status` | `'sending' \| 'streaming' \| 'error'` | — | Transient state; omit when settled. |
+| `from` | `string` | — | Sender label in the meta row (hidden in `minimal`). |
+| `at` | `Date` | — | Timestamp in the meta row (hidden in `minimal`). |
+| `reactions` | `Record<string, number>` | — | Controlled reaction counts. |
+| `activeReactions` | `string[]` | `[]` | Reaction keys the viewer has active (rendered pressed). |
+| `attachments` | `ChatAttachment[]` | — | Rendered as chips below the message body. |
+| `onReactionToggle` | `(icon: string) => void` | — | Enables pill toggling and both reaction menus. |
+| `children` | `ReactNode` / snippet | — | Message content. |
+
+Accepts all Ark factory `div` props plus `className`/`class`.
+
+### ChatMessageReaction
+
+#### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `icon` | emoji string / snippet | — | Pill content. |
+| `label` | `string` | — | Accessible name. |
+| `count` | `number` | `0` | Count shown after the icon (hidden at 0). |
+| `active` | `boolean` | `false` | Renders the pill pressed (`aria-pressed`). |
+| `onToggle` | `() => void` | — | Click/keyboard activation. |
+
+### ReactionEmoji
+
+#### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `emojis` | `readonly string[]` | `DEFAULT_REACTION_EMOJIS` | Emoji keys offered in the grid. |
+| `onSelect` | `(emoji: string) => void` | — | Called with the picked emoji; the menu closes itself. |
+| `label` | `string` | `'Add reaction'` | Accessible label for the trigger. |
+
+### ReactionRate
+
+#### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `counts` | `Record<string, number>` | — | Read for the `thumbs-up` / `thumbs-down` keys. |
+| `active` | `string[]` | `[]` | Reaction keys rendered pressed. |
+| `onToggle` | `(icon: string) => void` | — | Fires with `thumbs-up` or `thumbs-down`. |
+
+## Accessibility
+
+Reaction pills are native buttons with `aria-pressed` reflecting the active state and `aria-label` names. The emoji menu opens as an Ark popover (focus moves into the content, `Escape` closes and restores focus); every grid entry is a labelled native button. Statuses are visual only — announce semantic failures to assistive tech in your own markup.
+
+## Theme extensions
+
+None. The message reuses existing tokens (`--primary`, `--card`, `--muted`, `--border`, `--destructive`) — no `theme.css` changes.
